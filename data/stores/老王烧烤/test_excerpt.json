@@ -1,0 +1,47 @@
+{
+  "version_1": {
+    "style": "探店反差",
+    "hook": "路过成都·建设路这家烧烤店，门面不起眼，但我劝你别错过。",
+    "body": "一进去先点羊肉串、烤茄子、蒜蓉生蚝，人均大概75元。老板家的卖点很实在：炭火现烤不蘸料也香，夜宵常备座位。吃完你会明白，为什么附近人总往这儿钻。",
+    "cta": "就在附近的朋友，导航搜「老王烧烤」，今天就来尝尝！",
+    "segments": [
+      {
+        "index": 1,
+        "chars": 54,
+        "seconds": 12.9,
+        "text": "路过成都·建设路这家烧烤店，门面不起眼，但我劝你别错过。一进去先点羊肉串、烤茄子、蒜蓉生蚝，人均大概75元。"
+      },
+      {
+        "index": 2,
+        "chars": 46,
+        "seconds": 11.0,
+        "text": "老板家的卖点很实在：炭火现烤不蘸料也香，夜宵常备座位。吃完你会明白，为什么附近人总往这儿钻。"
+      },
+      {
+        "index": 3,
+        "chars": 25,
+        "seconds": 6.0,
+        "text": "就在附近的朋友，导航搜「老王烧烤」，今天就来尝尝！"
+      }
+    ],
+    "video_prompt_sample": "Image-to-video, vertical 9:16, photorealistic talking-head digital human. Subject: East Asian man around 30, neat short hair, friendly smile, clear features, wearing dark casual button-up shirt, simple, no logos. Scene: restaurant interior, warm lighting, softly blurred table with dishes in background. Subtle hint of signature dish (羊肉串) on the table behind. Camera: medium close-up chest-up, slight three-quarter angle, handheld phone vertical framing, locked framing, mild natural head motion. Action: speaking to camera with natural hand gestures, confident and warm. Expression: engaging, sincere, slight smile while talking. Lip-sync: accurately mouth the Chinese line: \"路过成都·建设路这家烧烤店，门面不起眼，但我劝你别错过。一进去先点羊肉串、烤茄子、蒜蓉生蚝，人均大概75元。\". Audio: clear Mandarin voiceover matching the lip motion. Lighting: warm restaurant practical lights, soft key, no flicker. Quality: sharp face, natural skin, no warping, no subtitle burn-in. Brand context: promo for 老王烧烤. Segment 1."
+  },
+  "ad_estimate_100yuan": {
+    "impressions": {
+      "low": 1250,
+      "mid": 2500,
+      "high": 5000
+    },
+    "clicks": {
+      "low": 10,
+      "mid": 37,
+      "high": 150
+    },
+    "to_store_or_redeem": {
+      "low": 1,
+      "mid": 1,
+      "high": 15
+    },
+    "disclaimer": "仅供参考，不构成收益保证。实际效果受素材、时段、竞争、门店位置等影响极大。"
+  }
+}

@@ -1,1 +1,39 @@
-placeholder
+{
+  "_meta": {
+    "is_example": true,
+    "note": "【示例数据】仅供演示，非真实门店",
+    "updated_at": "2026-10-31 10:07:11 Asia/Shanghai"
+  },
+  "avatar": {
+    "appearance_zh": "30岁左右东亚男性，短发干净利落，亲切微笑，五官端正",
+    "appearance_en": "East Asian man around 30, neat short hair, friendly smile, clear features",
+    "outfit_zh": "深色休闲衬衫，简洁无logo",
+    "outfit_en": "dark casual button-up shirt, simple, no logos",
+    "scene_zh": "餐厅室内，暖色灯光，背景虚化可见桌面餐品",
+    "scene_en": "restaurant interior, warm lighting, softly blurred table with dishes in background",
+    "camera_zh": "胸像近景，正面略侧，手机竖拍机位",
+    "camera_en": "medium close-up chest-up, slight three-quarter angle, handheld phone vertical framing"
+  },
+  "avg_price": "75元",
+  "category": "烧烤",
+  "city": "成都·建设路",
+  "dishes": [
+    "羊肉串",
+    "烤茄子",
+    "蒜蓉生蚝"
+  ],
+  "goal": "拉新到店",
+  "group_price": "59.9元双人餐",
+  "name": "老王烧烤",
+  "preferred_styles": [
+    "tancha_fancha",
+    "jiage_chongji",
+    "xuanian_gookou"
+  ],
+  "reference_script": "",
+  "sell_points": [
+    "炭火现烤不蘸料也香",
+    "夜宵常备座位",
+    "本地回头客多"
+  ]
+}
