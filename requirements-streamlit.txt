@@ -1,0 +1,6 @@
+# 仅本地 Streamlit 旧版需要；Render 部署不要装这个文件
+-r requirements.txt
+streamlit>=1.28.0,<2
+Pillow>=10.0.0
+waitress>=3.0.0,<4
+playwright>=1.40.0
