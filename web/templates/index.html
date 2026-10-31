@@ -1,1 +1,174 @@
-placeholder
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+  <meta name="theme-color" content="#e85d04" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="餐饮口播助手" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="apple-touch-icon" href="/static/icons/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/static/icons/icon-192.png" />
+  <title>餐饮口播助手</title>
+  <link rel="stylesheet" href="/static/css/app.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>🍜 餐饮口播助手</h1>
+      <div class="sub" id="llmStatus">模板引擎</div>
+    </div>
+    <button class="btn btn-sm btn-secondary" id="btnLogout" type="button">退出</button>
+  </header>
+
+  <!-- ① 店铺 -->
+  <section class="page active" id="page-store" data-tab="store">
+    <div class="card">
+      <h2>① 店铺信息</h2>
+      <label>加载已存店铺</label>
+      <select id="storeSelect"><option value="">（新建）</option></select>
+      <div class="btn-row">
+        <button class="btn btn-sm btn-secondary" id="btnLoadStore" type="button">加载</button>
+        <button class="btn btn-sm btn-ghost" id="btnExample" type="button">填入示例「老王烧烤」</button>
+      </div>
+      <div class="row cols-2">
+        <div>
+          <label>店名 *</label>
+          <input id="name" type="text" placeholder="例：老王烧烤" />
+        </div>
+        <div>
+          <label>城市/商圈 *</label>
+          <input id="city" type="text" placeholder="例：成都·建设路" />
+        </div>
+      </div>
+      <div class="row cols-2">
+        <div>
+          <label>品类 *</label>
+          <input id="category" type="text" placeholder="例：烧烤" />
+        </div>
+        <div>
+          <label>人均 *</label>
+          <input id="avg_price" type="text" placeholder="例：75元" />
+        </div>
+      </div>
+      <label>主打菜（每行一个）*</label>
+      <textarea id="dishes" placeholder="羊肉串&#10;烤茄子"></textarea>
+      <label>卖点（每行一条）*</label>
+      <textarea id="sell_points" placeholder="炭火现烤&#10;本地回头客多"></textarea>
+      <div class="row cols-2">
+        <div>
+          <label>目标</label>
+          <select id="goal">
+            <option>拉新到店</option>
+            <option>推团购</option>
+            <option>品牌人设</option>
+          </select>
+        </div>
+        <div>
+          <label>团购价（可选）</label>
+          <input id="group_price" type="text" placeholder="例：59.9元双人餐" />
+        </div>
+      </div>
+      <label>对标口播文案（可选）</label>
+      <textarea id="reference_script" placeholder="粘贴对标文案作风格参考"></textarea>
+      <label>生成风格（可多选）</label>
+      <div class="chips" id="styleChips"></div>
+      <label>生成版本数：<span id="nLabel">3</span></label>
+      <div class="range-wrap">
+        <input id="nVersions" type="range" min="1" max="5" value="3" />
+      </div>
+      <label>照片（可拍照）</label>
+      <input id="photos" type="file" accept="image/*" capture="environment" multiple />
+      <div class="btn-row">
+        <button class="btn btn-secondary" id="btnSave" type="button">💾 保存店铺</button>
+        <button class="btn btn-primary" id="btnGenerate" type="button">✨ 生成口播方案</button>
+      </div>
+      <label style="display:flex;align-items:center;gap:8px;margin-top:12px">
+        <input type="checkbox" id="useLlm" style="width:auto;min-height:auto" />
+        尝试 LLM（需配置 Key，失败回退模板）
+      </label>
+    </div>
+    <div class="card">
+      <h2>数字人形象（可改）</h2>
+      <label>外观（中文）</label>
+      <input id="av_appearance_zh" type="text" />
+      <label>服装（中文）</label>
+      <input id="av_outfit_zh" type="text" />
+      <label>场景（中文）</label>
+      <input id="av_scene_zh" type="text" />
+      <label>机位（中文）</label>
+      <input id="av_camera_zh" type="text" />
+      <label>Appearance (EN)</label>
+      <input id="av_appearance_en" type="text" />
+      <label>Outfit (EN)</label>
+      <input id="av_outfit_en" type="text" />
+      <label>Scene (EN)</label>
+      <input id="av_scene_en" type="text" />
+      <label>Camera (EN)</label>
+      <input id="av_camera_en" type="text" />
+    </div>
+  </section>
+
+  <!-- ② 文案 -->
+  <section class="page" id="page-scripts" data-tab="scripts">
+    <div id="scriptsBox"><div class="banner info">请先在「店铺」页生成方案</div></div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" id="btnExportMd" type="button">⬇️ 导出 Markdown</button>
+    </div>
+  </section>
+
+  <!-- ③ 分段 -->
+  <section class="page" id="page-segs" data-tab="segs">
+    <div id="segsBox"><div class="banner info">生成后在此查看 ≤15 秒分段</div></div>
+  </section>
+
+  <!-- ④ 视频 Prompt -->
+  <section class="page" id="page-prompts" data-tab="prompts">
+    <div id="promptsBox"><div class="banner info">每段对应 Grok Imagine Video 提示词</div></div>
+  </section>
+
+  <!-- ⑤ 投流 -->
+  <section class="page" id="page-ads" data-tab="ads">
+    <div class="banner danger">⚠️ 仅供参考，不构成收益保证。实际效果因素材、竞争、位置差异极大。</div>
+    <div class="card">
+      <h2>⑤ 抖音投流粗估</h2>
+      <p class="hint">参数为「行业经验参考假设」，可自行调整。</p>
+      <label>预算（元）：<span id="budgetLabel">100</span></label>
+      <div class="range-wrap">
+        <input id="budget" type="range" min="20" max="1000" step="10" value="100" />
+      </div>
+      <details>
+        <summary style="padding:10px 0;cursor:pointer;color:var(--muted)">调整假设参数</summary>
+        <label>CPM 低/中/高</label>
+        <div class="row cols-2">
+          <input id="cpm_low" type="number" value="20" />
+          <input id="cpm_mid" type="number" value="40" />
+        </div>
+        <input id="cpm_high" type="number" value="80" style="margin-top:8px" />
+        <label>CTR 低/中/高</label>
+        <input id="ctr_low" type="number" step="0.001" value="0.008" />
+        <input id="ctr_mid" type="number" step="0.001" value="0.015" style="margin-top:8px" />
+        <input id="ctr_high" type="number" step="0.001" value="0.03" style="margin-top:8px" />
+        <label>到店转化 低/中/高</label>
+        <input id="ts_low" type="number" step="0.01" value="0.02" />
+        <input id="ts_mid" type="number" step="0.01" value="0.05" style="margin-top:8px" />
+        <input id="ts_high" type="number" step="0.01" value="0.1" style="margin-top:8px" />
+      </details>
+      <button class="btn btn-primary" id="btnEstimate" type="button" style="margin-top:12px">重新估算</button>
+      <div id="adResult" style="margin-top:12px"></div>
+    </div>
+  </section>
+
+  <nav class="tabs" id="tabs">
+    <button type="button" data-tab="store" class="active"><span class="ico">🏪</span>店铺</button>
+    <button type="button" data-tab="scripts"><span class="ico">✍️</span>文案</button>
+    <button type="button" data-tab="segs"><span class="ico">✂️</span>分段</button>
+    <button type="button" data-tab="prompts"><span class="ico">🎬</span>视频</button>
+    <button type="button" data-tab="ads"><span class="ico">📈</span>投流</button>
+  </nav>
+
+  <div class="toast" id="toast"></div>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
