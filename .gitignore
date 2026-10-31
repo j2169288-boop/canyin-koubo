@@ -18,3 +18,4 @@ dist/
 build/
 playwright-report/
 .test-venv/
+data/.access_password_hash

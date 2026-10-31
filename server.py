@@ -65,6 +65,27 @@ if _secure in ("1", "true", "yes") or (_is_production() and _secure not in ("0",
 app.config["MAX_CONTENT_LENGTH"] = 20 * 1024 * 1024  # 20MB uploads
 
 
+PW_FILE = ROOT / "data" / ".access_password_hash"
+
+
+def _custom_hash() -> str:
+    try:
+        return PW_FILE.read_text(encoding="utf-8").strip()
+    except OSError:
+        return ""
+
+
+def _check_password(password: str) -> bool:
+    """优先使用页面里改过的密码（哈希存盘）；否则用 APP_PASSWORD。"""
+    from werkzeug.security import check_password_hash
+
+    h = _custom_hash()
+    if h:
+        return bool(password) and check_password_hash(h, password)
+    expected = _load_password()
+    return bool(expected) and secrets.compare_digest(password, expected)
+
+
 def _load_password() -> str:
     """密码只来自 APP_PASSWORD；本地开发可回退 .app_password。生产环境禁止默认/空密码。"""
     env = os.environ.get("APP_PASSWORD", "").strip()
@@ -107,13 +128,39 @@ def login_page():
 def api_login():
     data = request.get_json(silent=True) or {}
     password = (data.get("password") or request.form.get("password") or "").strip()
-    expected = _load_password()
-    if not expected:
+    if not _custom_hash() and not _load_password():
         return jsonify({"ok": False, "error": "服务端未配置密码"}), 500
-    if not secrets.compare_digest(password, expected):
+    if not _check_password(password):
         return jsonify({"ok": False, "error": "密码错误"}), 401
     session["authed"] = True
     session.permanent = True
+    return jsonify({"ok": True})
+
+
+@app.get("/password")
+@login_required
+def password_page():
+    return send_from_directory(TEMPLATES, "password.html")
+
+
+@app.post("/api/password")
+@login_required
+def api_password():
+    from werkzeug.security import generate_password_hash
+
+    data = request.get_json(silent=True) or request.form
+    new = (data.get("new_password") or "").strip()
+    confirm = (data.get("confirm_password") or "").strip()
+    if len(new) < 6:
+        return jsonify({"ok": False, "error": "新密码至少 6 位"}), 400
+    if new != confirm:
+        return jsonify({"ok": False, "error": "两次输入不一致"}), 400
+    PW_FILE.parent.mkdir(parents=True, exist_ok=True)
+    PW_FILE.write_text(generate_password_hash(new), encoding="utf-8")
+    try:
+        os.chmod(PW_FILE, 0o600)
+    except OSError:
+        pass
     return jsonify({"ok": True})
 
 
